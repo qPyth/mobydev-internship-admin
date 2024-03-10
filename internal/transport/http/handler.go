@@ -142,7 +142,10 @@ func (h *Handler) UpdateProject(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) bindJSON(r *http.Request, data interface{}) error {
-	err := json.NewDecoder(r.Body).Decode(data)
+
+	dec := json.NewDecoder(r.Body)
+	dec.DisallowUnknownFields()
+	err := dec.Decode(data)
 	if err != nil {
 		return fmt.Errorf("failed to decode request body: %w", err)
 	}
